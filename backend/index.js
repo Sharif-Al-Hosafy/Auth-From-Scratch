@@ -1,10 +1,13 @@
 const express = require('express');
 const volleyball = require('volleyball');
-const auth = require("./Routes/auth")
- 
+
 const app = express();
 
+const auth = require("./Routes/auth");
+const db = require("./db/connection");
+
 app.use(volleyball)
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
