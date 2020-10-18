@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home text-center">
     <div class="jumbotron">
       <h1 class="display-3">Auth From Scratch</h1>
       <p class="lead">
@@ -10,7 +10,12 @@
         Implementing Auth is fun 🔐
       </p>
       <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Sign Up</a>
+        <router-link
+          class="btn btn-primary btn-lg"
+          :to="{ name: 'signup' }"
+          role="button"
+          >Sign Up</router-link
+        >
       </p>
     </div>
   </div>
