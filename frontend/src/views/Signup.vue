@@ -1,7 +1,18 @@
 <template>
   <div>
     <h1>Sign Up</h1>
-    <form @submit.prevent="signup">
+    <div class="progress" v-if="signingUp">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        aria-valuenow="75"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        style="width: 100%"
+      ></div>
+    </div>
+
+    <form v-if="!signingUp" @submit.prevent="signup">
       <div v-if="errorMessage" class="alert alert-dismissible alert-danger">
         {{ errorMessage }}
       </div>
@@ -84,6 +95,7 @@ const schema = Joi.object({
 
 export default {
   data: () => ({
+    signingUp: false,
     errorMessage: "",
     user: {
       email: "",
@@ -110,6 +122,7 @@ export default {
           password: this.user.password,
         };
 
+        this.signingUp = true;
         fetch(signup_url, {
           method: "POST",
           body: JSON.stringify(body),
@@ -124,11 +137,17 @@ export default {
               throw new Error(error.message);
             });
           })
-          .then((user) => {
-            console.log(user);
+          .then(() => {
+            setTimeout(() => {
+              this.signingUp = false;
+              this.$router.push("/login");
+            }, 1000);
           })
           .catch((error) => {
-            this.errorMessage = error.message;
+            setTimeout(() => {
+              this.signingUp = false;
+              this.errorMessage = error.message;
+            }, 1000);
           });
       }
     },
