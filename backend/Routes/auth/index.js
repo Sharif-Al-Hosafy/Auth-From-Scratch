@@ -19,6 +19,14 @@ const schema = Joi.object({
   password: Joi.string().trim().min(10).required(),
 });
 
+const schema2 = Joi.object({
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ["com", "net"] },
+  }),
+  password: Joi.string().trim().min(10).required(),
+});
+
 router.get("/", (req, res) => {
   res.json({
     message: "Get auth",
@@ -53,4 +61,32 @@ router.post("/signup", (req, res, next) => {
     next(result.error);
   }
 });
+
+function rspondError422(res, next) {
+  res.status(422);
+  const error = new Error("Unable to login");
+  next(error);
+}
+
+router.post("/login", (req, res, next) => {
+  const result = schema2.validate(req.body);
+  if (result.error === undefined) {
+    User.findOne({ email: result.value.email }).then((user) => {
+      if (user) {
+        bcrypt.compare(result.value.password, user.password).then((result) => {
+          if (result) {
+            res.send({ result });
+          } else {
+            rspondError422(res, next);
+          }
+        });
+      } else {
+        rspondError422(res, next);
+      }
+    });
+  } else {
+    rspondError422(res, next);
+  }
+});
+
 module.exports = router;
