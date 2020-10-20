@@ -1,6 +1,7 @@
 const express = require("express");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
@@ -75,7 +76,23 @@ router.post("/login", (req, res, next) => {
       if (user) {
         bcrypt.compare(result.value.password, user.password).then((result) => {
           if (result) {
-            res.send({ result });
+            const payload = {
+              _id: user._id,
+              email: user.email,
+            };
+            console.log(process.env.TOKEN_SECRET);
+            jwt.sign(
+              payload,
+              process.env.TOKEN_SECRET,
+              { expiresIn: "1d" },
+              (err, token) => {
+                if (err) {
+                  console.log("zby");
+                } else {
+                  res.send({ token });
+                }
+              }
+            );
           } else {
             rspondError422(res, next);
           }
