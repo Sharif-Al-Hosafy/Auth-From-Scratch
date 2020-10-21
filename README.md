@@ -1,5 +1,5 @@
 # Auth-From-Scratch
-Add JWT-based Authentication to a MEAVN Stack Application
+Add JWT-based Authentication to a MEVN Stack Application
 
 ## Authentication
 * [x] Create Server
