@@ -7,6 +7,16 @@ import Notes from "../views/Notes.vue";
 
 Vue.use(VueRouter);
 
+function alreadyLoggedIn(to, from, next) {
+  if (localStorage.token) next("/notes");
+  else next();
+}
+
+function isLogged(to, from, next) {
+  if (localStorage.token) next();
+  else next("/login");
+}
+
 const routes = [
   {
     path: "/",
@@ -17,16 +27,19 @@ const routes = [
     path: "/signup",
     name: "signup",
     component: Signup,
+    beforeEnter: alreadyLoggedIn,
   },
   {
     path: "/login",
     name: "login",
     component: Login,
+    beforeEnter: alreadyLoggedIn,
   },
   {
     path: "/notes",
     name: "notes",
     component: Notes,
+    beforeEnter: isLogged,
   },
 ];
 

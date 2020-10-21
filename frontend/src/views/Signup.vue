@@ -137,10 +137,11 @@ export default {
               throw new Error(error.message);
             });
           })
-          .then(() => {
+          .then((result) => {
+            localStorage.token = result.token;
             setTimeout(() => {
               this.signingUp = false;
-              this.$router.push("/login");
+              this.$router.push("/notes");
             }, 1000);
           })
           .catch((error) => {

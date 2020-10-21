@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const User = require("../../db/users");
+const { func } = require("joi");
 
 const schema = Joi.object({
   email: Joi.string().email({
@@ -27,6 +28,25 @@ const schema2 = Joi.object({
   }),
   password: Joi.string().trim().min(10).required(),
 });
+
+function generatingJWT(user, res, next) {
+  const payload = {
+    _id: user._id,
+    email: user.email,
+  };
+  jwt.sign(
+    payload,
+    process.env.TOKEN_SECRET,
+    { expiresIn: "1d" },
+    (err, token) => {
+      if (err) {
+        console.log("error");
+      } else {
+        res.send({ token });
+      }
+    }
+  );
+}
 
 router.get("/", (req, res) => {
   res.json({
@@ -52,7 +72,7 @@ router.post("/signup", (req, res, next) => {
           });
 
           newUser.save().then((saved) => {
-            res.send({ saved });
+            generatingJWT(saved, res, next);
           });
         });
       }
@@ -76,22 +96,7 @@ router.post("/login", (req, res, next) => {
       if (user) {
         bcrypt.compare(result.value.password, user.password).then((result) => {
           if (result) {
-            const payload = {
-              _id: user._id,
-              email: user.email,
-            };
-            jwt.sign(
-              payload,
-              process.env.TOKEN_SECRET,
-              { expiresIn: "1d" },
-              (err, token) => {
-                if (err) {
-                  console.log("zby");
-                } else {
-                  res.send({ token });
-                }
-              }
-            );
+            generatingJWT(user, res, next);
           } else {
             rspondError422(res, next);
           }

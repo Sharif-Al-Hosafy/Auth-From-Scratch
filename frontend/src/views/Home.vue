@@ -3,7 +3,7 @@
     <div class="jumbotron">
       <h1 class="display-3">Auth From Scratch</h1>
       <p class="lead">
-        JWT-based Authentication to a MEAVN Stack Application
+        JWT-based Authentication to a MEVN Stack Application
       </p>
       <hr class="my-4" />
       <p>

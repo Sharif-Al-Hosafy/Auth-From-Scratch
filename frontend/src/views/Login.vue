@@ -98,7 +98,7 @@ export default {
             });
           })
           .then((result) => {
-            console.log(result);
+            localStorage.token = result.token;
             setTimeout(() => {
               this.loggingIn = false;
               this.$router.push("/notes");
