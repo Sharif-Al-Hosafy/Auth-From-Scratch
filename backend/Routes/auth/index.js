@@ -80,7 +80,6 @@ router.post("/login", (req, res, next) => {
               _id: user._id,
               email: user.email,
             };
-            console.log(process.env.TOKEN_SECRET);
             jwt.sign(
               payload,
               process.env.TOKEN_SECRET,

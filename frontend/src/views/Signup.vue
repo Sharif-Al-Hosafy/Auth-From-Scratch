@@ -161,7 +161,6 @@ export default {
       if (result.error === undefined) {
         return true;
       }
-      console.log(result.error);
       if (result.error.message.includes("username")) {
         this.errorMessage = " Username is not valid! 😭";
       } else if (result.error.message.includes("email")) {
@@ -169,6 +168,7 @@ export default {
       } else if (result.error.message.includes("password")) {
         this.errorMessage = " password is not valid 😭";
       }
+      return false;
     },
   },
 };
