@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const auth = require("./Routes/auth");
 const db = require("./db/connection");
+const middlewares = require("./Routes/middlewares");
 
 app.use(volleyball);
 app.use(
@@ -15,10 +16,12 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(middlewares.checkValidToken);
 
 app.get("/", (req, res) => {
   res.json({
     message: "Hello World!",
+    user: req.user,
   });
 });
 

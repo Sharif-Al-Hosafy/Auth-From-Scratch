@@ -9,7 +9,8 @@
       <p>
         Implementing Auth is fun 🔐
       </p>
-      <p class="lead">
+
+      <p v-if="!token" class="lead">
         <router-link
           class="btn btn-primary btn-lg"
           :to="{ name: 'signup' }"
@@ -25,6 +26,12 @@
 // @ is an alias to /src
 
 export default {
+  data: () => ({
+    token: "",
+  }),
+  mounted() {
+    if (localStorage.token) this.token = localStorage.token;
+  },
   name: "Home",
   components: {},
 };
