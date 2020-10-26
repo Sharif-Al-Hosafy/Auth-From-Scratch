@@ -6,6 +6,7 @@ const app = express();
 require("dotenv").config();
 
 const auth = require("./Routes/auth");
+const notes = require("./Routes/notes");
 const db = require("./db/connection");
 const middlewares = require("./Routes/middlewares");
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", auth);
+app.use("/api/notes", middlewares.isLoggedIn, notes);
 
 function notFound(req, res, next) {
   res.status(404);

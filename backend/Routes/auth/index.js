@@ -33,6 +33,7 @@ function generatingJWT(user, res, next) {
   const payload = {
     _id: user._id,
     email: user.email,
+    username: user.username,
   };
   jwt.sign(
     payload,
